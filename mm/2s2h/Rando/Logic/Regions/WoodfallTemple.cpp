@@ -41,8 +41,8 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_BOW_ROOM] = RandoRegion{ .name = "Bow Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(DINOLFOS)?
-            CHECK(RC_WOODFALL_TEMPLE_BOW_CHEST, true),
+            // CAN_KILL_ENEMY(DINOLFOS)? - ADDED
+            CHECK(RC_WOODFALL_TEMPLE_BOW_CHEST, CAN_KILL_DINALFOS),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM_UPPER, true),
@@ -50,8 +50,8 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_COMPASS_ROOM] = RandoRegion{ .name = "Compass Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(DRAGONFLY)?
-            CHECK(RC_WOODFALL_TEMPLE_COMPASS_CHEST, CAN_BE_DEKU || CAN_USE_EXPLOSIVE),
+            // CAN_KILL_ENEMY(DRAGONFLY)? - ADDED
+            CHECK(RC_WOODFALL_TEMPLE_COMPASS_CHEST, CAN_KILL_ENEMY(DRAGONFLY)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAZE_ROOM, true),
@@ -60,7 +60,7 @@ static RegisterShipInitFunc initFunc([]() {
     Regions[RR_WOODFALL_TEMPLE_DARK_ROOM] = RandoRegion{ .name = "Dark Room", .sceneId = SCENE_MITURIN,
         .checks = {
             // CAN_KILL_ENEMY(DARK_FOG_DUDE)?
-            CHECK(RC_WOODFALL_TEMPLE_DARK_CHEST, true),
+            CHECK(RC_WOODFALL_TEMPLE_DARK_CHEST,  CAN_KILL_ENEMY(BOE)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, CAN_BE_DEKU && CAN_LIGHT_TORCH_NEAR_ANOTHER),
@@ -80,15 +80,15 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_ENTRANCE] = RandoRegion{ .name = "Entrance", .sceneId = SCENE_MITURIN,
         .checks = {
-            CHECK(RC_WOODFALL_TEMPLE_ENTRANCE_CHEST, CAN_BE_DEKU),
-            CHECK(RC_WOODFALL_TEMPLE_SF_ENTRANCE, true),
+            CHECK(RC_WOODFALL_TEMPLE_ENTRANCE_CHEST, CAN_BE_DEKU || HAS_ITEM(ITEM_HOOKSHOT)),
+            CHECK(RC_WOODFALL_TEMPLE_SF_ENTRANCE, CAN_USE_PROJECTILE,
             CHECK(RC_WOODFALL_TEMPLE_ENTRANCE_POT, CAN_BE_DEKU),
         },
         .exits = { //     TO                                         FROM
             EXIT(ENTRANCE(WOODFALL, 1),                     ENTRANCE(WOODFALL_TEMPLE, 0), true),
         },
         .connections = {
-            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM, CAN_BE_DEKU),
+            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM, CAN_BE_DEKU || HAS_ITEM(ITEM_HOOKSHOT)),
         },
     };
     Regions[RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER] = RandoRegion{ .name = "Main Room Upper", .sceneId = SCENE_MITURIN,
@@ -126,19 +126,19 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_POT, true),
             // TODO: CAN_KILL_ENEMY(DEKU_BABA)?
             CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_DEKU_BABA, true),
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_BUBBLE, (HAS_ITEM(ITEM_BOW) || HAS_ITEM(ITEM_HOOKSHOT)) && HAS_ITEM(ITEM_MASK_GREAT_FAIRY)),
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_BUBBLE, (HAS_ITEM(ITEM_BOW) || HAS_ITEM(ITEM_HOOKSHOT)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_ENTRANCE, true),
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM, true), // It's a little tight for goron but possible
             CONNECTION(RR_WOODFALL_TEMPLE_MAZE_ROOM, KEY_COUNT(WOODFALL_TEMPLE) >= 1),
-            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, Flags_GetSceneSwitch(SCENE_MITURIN, 0x09)),
+            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, Flags_GetSceneSwitch(SCENE_MITURIN, 0x09) || HAS_ITEM(ITEM_HOOKSHOT)),
         },
     };
     Regions[RR_WOODFALL_TEMPLE_MAP_ROOM] = RandoRegion{ .name = "Map Room", .sceneId = SCENE_MITURIN,
         .checks = {
             // CAN_KILL_ENEMY(SNAPPER)?
-            CHECK(RC_WOODFALL_TEMPLE_MAP_CHEST, CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON),
+            CHECK(RC_WOODFALL_TEMPLE_MAP_CHEST, CAN_KILL_ENEMY(SNAPPER),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM, true),
@@ -148,12 +148,12 @@ static RegisterShipInitFunc initFunc([]() {
         .checks = {
             CHECK(RC_WOODFALL_TEMPLE_MAZE_POT_01, true),
             CHECK(RC_WOODFALL_TEMPLE_MAZE_POT_02, true),
-            // TODO: Trick for bombs & chus here
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_BEEHIVE, CAN_USE_PROJECTILE),
+            // TODO: Trick for bombs & chus here - Doesn't need a trick. Bomb can break it from above
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_BEEHIVE, CAN_USE_PROJECTILE ||  CAN_USE_EXPLOSIVE),
             // TODO: Maybe add a health check here later
             CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_BUBBLE, true),
-            // CAN_KILL_ENEMY(SKULLTULA)
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_SKULLTULA, true),
+            // CAN_KILL_ENEMY(SKULLTULA)? - DONE
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_SKULLTULA, CAN_KILL_ENEMY(SKULLTULA)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM, KEY_COUNT(WOODFALL_TEMPLE) >= 1),
@@ -169,18 +169,18 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_POT_01, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW)),
             CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_POT_02, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW)),
             CHECK(RC_WOODFALL_TEMPLE_SF_PRE_BOSS_PILLAR, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW)),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_01, CAN_BE_DEKU),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_02, CAN_BE_DEKU),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_03, CAN_BE_DEKU),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_04, CAN_BE_DEKU),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_05, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW)),
-            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_06, CAN_BE_DEKU && CAN_BE_ZORA),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_01, CAN_BE_DEKU || CAN_BE_ZORA),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_02, CAN_BE_DEKU || CAN_BE_ZORA),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_03, CAN_BE_DEKU || CAN_BE_ZORA),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_04, CAN_BE_DEKU || CAN_BE_ZORA),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_05, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW) || CAN_BE_ZORA || CAN_USE_EXPLOSIVES)),
+            CHECK(RC_WOODFALL_TEMPLE_PRE_BOSS_FREESTANDING_RUPEE_06, CAN_BE_DEKU && (CAN_BE_ZORA || CAN_USE_EXPLOSIVES)),
         },
         .exits = { //     TO                                         FROM
             EXIT(ENTRANCE(ODOLWAS_LAIR, 0),                          ONE_WAY_EXIT, CAN_BE_DEKU && HAS_ITEM(ITEM_BOW) && CHECK_DUNGEON_ITEM(DUNGEON_BOSS_KEY, DUNGEON_INDEX_WOODFALL_TEMPLE)),
         },
         .connections = {
-            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, true),
+            CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, CAN_BE_DEKU),
         },
     };
     Regions[RR_WOODFALL_TEMPLE_WATER_ROOM_UPPER] = RandoRegion{ .name = "Water Room Upper", .sceneId = SCENE_MITURIN,
@@ -203,7 +203,7 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_WOODFALL_TEMPLE_SF_WATER_ROOM_BEEHIVE, (
                 // Can they break it, leaving the fairy up high? // TODO: Trick for bombs & chus here
                 ((HAS_ITEM(ITEM_HOOKSHOT) || CAN_BE_ZORA) && HAS_ITEM(ITEM_MASK_GREAT_FAIRY)) ||
-                // Can they break it, making it drop into the water?
+                // Can they break it, making it drop into the water? --- Only if you make the item drop if not it will float
                 (HAS_ITEM(ITEM_BOW) || (CAN_BE_DEKU && HAS_MAGIC))
             )),
         },
