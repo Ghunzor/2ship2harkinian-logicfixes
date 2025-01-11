@@ -10,12 +10,11 @@ using namespace Rando::Logic;
 static RegisterShipInitFunc initFunc([]() {
     Regions[RR_WOODFALL_TEMPLE_BOSS_KEY_ROOM] = RandoRegion{ .name = "Boss Key Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(GEKKO)?
-            CHECK(RC_WOODFALL_TEMPLE_BOSS_KEY_CHEST, HAS_ITEM(ITEM_BOW) && (CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON)),
-            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_01, HAS_ITEM(ITEM_BOW) && (CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON)),
-            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_02, HAS_ITEM(ITEM_BOW) && (CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON)),
-            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_03, HAS_ITEM(ITEM_BOW) && (CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON)),
-            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_04, HAS_ITEM(ITEM_BOW) && (CAN_BE_DEKU || CAN_USE_EXPLOSIVE || CAN_BE_GORON)),
+            CHECK(RC_WOODFALL_TEMPLE_BOSS_KEY_CHEST, CanKillEnemy(ACTOR_EN_PAMETFROG)),
+            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_01, CanKillEnemy(ACTOR_EN_PAMETFROG)),
+            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_02, CanKillEnemy(ACTOR_EN_PAMETFROG)),
+            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_03, CanKillEnemy(ACTOR_EN_PAMETFROG)),
+            CHECK(RC_WOODFALL_TEMPLE_MINIBOSS_ROOM_POT_04, CanKillEnemy(ACTOR_EN_PAMETFROG)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM_UPPER, true),
@@ -23,17 +22,15 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_BOSS_ROOM] = RandoRegion{ .sceneId = SCENE_MITURIN_BS,
         .checks = {
-            // TODO: CAN_KILL_BOSS(Odolwa)?
-            CHECK(RC_WOODFALL_TEMPLE_BOSS_CONTAINER, true),
-            CHECK(RC_WOODFALL_TEMPLE_BOSS_WARP, true),
-            CHECK(RC_GIANTS_CHAMBER_OATH_TO_ORDER, true),
+            CHECK(RC_WOODFALL_TEMPLE_BOSS_CONTAINER, CanKillEnemy(ACTOR_BOSS_01)),
+            CHECK(RC_WOODFALL_TEMPLE_BOSS_WARP, CanKillEnemy(ACTOR_BOSS_01)),
+            CHECK(RC_GIANTS_CHAMBER_OATH_TO_ORDER, CanKillEnemy(ACTOR_BOSS_01)),
         },
         .exits = { //     TO                                         FROM
-            EXIT(ENTRANCE(WOODFALL_TEMPLE, 1),                       ONE_WAY_EXIT, true),
+            EXIT(ENTRANCE(WOODFALL_TEMPLE, 1),                       ONE_WAY_EXIT, CanKillEnemy(ACTOR_BOSS_01)),
         },
         .events = {
-            // TODO: CAN_KILL_BOSS(Odolwa)?
-            EVENT_WEEKEVENTREG("Clear Woodfall Temple", WEEKEVENTREG_CLEARED_WOODFALL_TEMPLE, true),
+            EVENT_WEEKEVENTREG("Clear Woodfall Temple", WEEKEVENTREG_CLEARED_WOODFALL_TEMPLE, CanKillEnemy(ACTOR_BOSS_01)),
         },
         .oneWayEntrances = {
             ENTRANCE(ODOLWAS_LAIR, 0), // From Woodfall Temple Pre-Boss Room
@@ -41,8 +38,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_BOW_ROOM] = RandoRegion{ .name = "Bow Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(DINOLFOS)? - ADDED
-            CHECK(RC_WOODFALL_TEMPLE_BOW_CHEST, CAN_KILL_DINALFOS),
+            CHECK(RC_WOODFALL_TEMPLE_BOW_CHEST, CanKillEnemy(ACTOR_EN_DINOFOS)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM_UPPER, true),
@@ -50,8 +46,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_COMPASS_ROOM] = RandoRegion{ .name = "Compass Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(DRAGONFLY)? - ADDED
-            CHECK(RC_WOODFALL_TEMPLE_COMPASS_CHEST, CAN_KILL_ENEMY(DRAGONFLY)),
+            CHECK(RC_WOODFALL_TEMPLE_COMPASS_CHEST, CanKillEnemy(ACTOR_EN_GRASSHOPPER)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAZE_ROOM, true),
@@ -59,8 +54,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_DARK_ROOM] = RandoRegion{ .name = "Dark Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(DARK_FOG_DUDE)?
-            CHECK(RC_WOODFALL_TEMPLE_DARK_CHEST,  CAN_KILL_ENEMY(BOE)),
+            CHECK(RC_WOODFALL_TEMPLE_DARK_CHEST,  CanKillEnemy(ACTOR_EN_MKK)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM_UPPER, CAN_BE_DEKU && CAN_LIGHT_TORCH_NEAR_ANOTHER),
@@ -124,9 +118,8 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_WOODFALL_TEMPLE_MAIN_ROOM_LOWER_POT_05, true),
             CHECK(RC_WOODFALL_TEMPLE_MAIN_ROOM_LOWER_POT_06, true),
             CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_POT, true),
-            // TODO: CAN_KILL_ENEMY(DEKU_BABA)?
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_DEKU_BABA, true),
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_BUBBLE, (HAS_ITEM(ITEM_BOW) || HAS_ITEM(ITEM_HOOKSHOT)),
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_DEKU_BABA, CanKillEnemy(ACTOR_EN_DEKUBABA)),
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAIN_BUBBLE, (HAS_ITEM(ITEM_BOW) || HAS_ITEM(ITEM_HOOKSHOT))),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_ENTRANCE, true),
@@ -137,8 +130,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_WOODFALL_TEMPLE_MAP_ROOM] = RandoRegion{ .name = "Map Room", .sceneId = SCENE_MITURIN,
         .checks = {
-            // CAN_KILL_ENEMY(SNAPPER)?
-            CHECK(RC_WOODFALL_TEMPLE_MAP_CHEST, CAN_KILL_ENEMY(SNAPPER)),
+            CHECK(RC_WOODFALL_TEMPLE_MAP_CHEST, CanKillEnemy(ACTOR_EN_BIGPAMET)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_WATER_ROOM, true),
@@ -152,8 +144,8 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_BEEHIVE, CAN_USE_PROJECTILE ||  CAN_USE_EXPLOSIVE),
             // TODO: Maybe add a health check here later
             CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_BUBBLE, true),
-            // CAN_KILL_ENEMY(SKULLTULA)? - DONE
-            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_SKULLTULA, CAN_KILL_ENEMY(SKULLTULA)),
+            // CanKillEnemy(ACTOR_EN_ST)? - DONE
+            CHECK(RC_WOODFALL_TEMPLE_SF_MAZE_SKULLTULA, CanKillEnemy(ACTOR_EN_ST)),
         },
         .connections = {
             CONNECTION(RR_WOODFALL_TEMPLE_MAIN_ROOM, KEY_COUNT(WOODFALL_TEMPLE) >= 1),
