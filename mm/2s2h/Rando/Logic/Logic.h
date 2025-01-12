@@ -229,7 +229,7 @@ inline bool CanKillEnemy(ActorId EnemyId) {
             return (CAN_USE_SWORD || CAN_BE_GORON || HAS_ITEM(ITEM_BOW) || (CAN_BE_DEKU && HAS_MAGIC));
         case ACTOR_EN_WIZ: // Wizrobe
             return (HAS_ITEM(ITEM_BOW) || HAS_ITEM(ITEM_HOOKSHOT) || CAN_USE_SWORD || CAN_BE_GORON);
-        case ACTOR_EN_WF: //Wolfos
+        case ACTOR_EN_WF: // Wolfos
             return (CAN_USE_HUMAN_SWORD || (CAN_BE_DEKU && HAS_MAGIC) || CAN_BE_GORON || CAN_BE_ZORA);
         case ACTOR_EN_JSO2: // Garo Master
             return (HAS_ITEM(ITEM_BOW) || CAN_BE_GORON || CAN_USE_SWORD);
