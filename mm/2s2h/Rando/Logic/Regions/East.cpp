@@ -267,7 +267,7 @@ static RegisterShipInitFunc initFunc([]() {
             EXIT(ENTRANCE(IKANA_CANYON, 6),                 ENTRANCE(SAKONS_HIDEOUT, 0), true),
         },
         .events = {
-            EVENT_WEEKEVENTREG("Help Kafei get the Sun Mask", WEEKEVENTREG_ESCAPED_SAKONS_HIDEOUT, CAN_KILL_WOLFOS), // Was gonna do Babas too, but it does not seem to like it when I do both
+            EVENT_WEEKEVENTREG("Help Kafei get the Sun Mask", WEEKEVENTREG_ESCAPED_SAKONS_HIDEOUT, CanKillEnemy(ACTOR_EN_WF)), // Was gonna do Babas too, but it does not seem to like it when I do both
         },
     };
     Regions[RR_SECRET_SHRINE_ENTRANCE] = RandoRegion{ .name = "Entrance", .sceneId = SCENE_RANDOM,
