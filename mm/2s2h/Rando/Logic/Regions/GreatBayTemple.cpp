@@ -10,7 +10,7 @@ using namespace Rando::Logic;
 static RegisterShipInitFunc initFunc([]() {
     Regions[RR_GREAT_BAY_TEMPLE_BABA_CHEST_ROOM] = RandoRegion{ .sceneId = SCENE_SEA,
         .checks = {
-            CHECK(RC_GREAT_BAY_TEMPLE_BABA_CHEST, CAN_BE_ZORA || CAN_USE_PROJECTILE || HAS_ITEM(ITEM_HOOKSHOT)),
+            CHECK(RC_GREAT_BAY_TEMPLE_BABA_CHEST, CAN_BE_ZORA),
         },
         .connections = {
             CONNECTION(RR_GREAT_BAY_TEMPLE_COMPASS_ROOM,    true),
@@ -61,7 +61,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_GREAT_BAY_TEMPLE_CENTRAL_ROOM] = RandoRegion{ .sceneId = SCENE_SEA,
         .checks = {
-            CHECK(RC_GREAT_BAY_TEMPLE_SF_CENTRAL_ROOM_BARREL,           CAN_BE_GORON || CAN_USE_EXPLOSIVE),
+            CHECK(RC_GREAT_BAY_TEMPLE_SF_CENTRAL_ROOM_BARREL,           true),
             CHECK(RC_GREAT_BAY_TEMPLE_CENTRAL_ROOM_POT_01,              true),
             CHECK(RC_GREAT_BAY_TEMPLE_CENTRAL_ROOM_POT_02,              true),
             CHECK(RC_GREAT_BAY_TEMPLE_SF_CENTRAL_ROOM_UNDERWATER_POT,   CAN_BE_ZORA),
@@ -70,7 +70,7 @@ static RegisterShipInitFunc initFunc([]() {
             CONNECTION(RR_GREAT_BAY_TEMPLE_GREEN_PIPE_1,            CAN_USE_MAGIC_ARROW(ICE)),
             CONNECTION(RR_GREAT_BAY_TEMPLE_MAP_ROOM,                CAN_BE_ZORA),
             CONNECTION(RR_GREAT_BAY_TEMPLE_PRE_BOSS_ROOM,           CAN_BE_ZORA),
-            CONNECTION(RR_GREAT_BAY_TEMPLE_RED_PIPE_BEFORE_WART,    true),
+            CONNECTION(RR_GREAT_BAY_TEMPLE_RED_PIPE_BEFORE_WART,    CAN_BE_ZORA),
             CONNECTION(RR_GREAT_BAY_TEMPLE_WATER_WHEEL_ROOM,        true),
         },
     };
@@ -186,11 +186,11 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_GREAT_BAY_TEMPLE_GREEN_PIPE_3] = RandoRegion{ .sceneId = SCENE_SEA,
         .checks = {
-            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_CHEST,          CAN_USE_MAGIC_ARROW(FIRE)),
+            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_CHEST,          CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
             CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_LOWER_POT,      true),
-            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_UPPER_POT_01,   CAN_USE_MAGIC_ARROW(FIRE)),
-            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_UPPER_POT_02,   CAN_USE_MAGIC_ARROW(FIRE)),
-            CHECK(RC_GREAT_BAY_TEMPLE_SF_GREEN_PIPE_3_BARREL,      CAN_BE_ZORA && CAN_USE_MAGIC_ARROW(FIRE)),
+            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_UPPER_POT_01,   CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
+            CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_UPPER_POT_02,   CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
+            CHECK(RC_GREAT_BAY_TEMPLE_SF_GREEN_PIPE_3_BARREL,      CAN_BE_ZORA && CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
             CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_LARGE_CRATE_01, true),
             CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_LARGE_CRATE_02, true),
             CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_LARGE_CRATE_03, true),
@@ -200,8 +200,8 @@ static RegisterShipInitFunc initFunc([]() {
             CHECK(RC_GREAT_BAY_TEMPLE_GREEN_PIPE_3_LARGE_CRATE_07, true),
         },
         .connections = {
-            CONNECTION(RR_GREAT_BAY_TEMPLE_GREEN_PIPE_2,  true),
-            CONNECTION(RR_GREAT_BAY_TEMPLE_MAP_ROOM,      CAN_USE_MAGIC_ARROW(FIRE)),
+            CONNECTION(RR_GREAT_BAY_TEMPLE_GREEN_PIPE_2,     CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
+            CONNECTION(RR_GREAT_BAY_TEMPLE_MAP_ROOM,         CAN_USE_MAGIC_ARROW(FIRE) && CAN_USE_MAGIC_ARROW(ICE))),
         },
     };
     Regions[RR_GREAT_BAY_TEMPLE_MAP_ROOM] = RandoRegion{ .sceneId = SCENE_SEA,
@@ -223,7 +223,7 @@ static RegisterShipInitFunc initFunc([]() {
         .connections = {
             CONNECTION(RR_GREAT_BAY_TEMPLE_BABA_CHEST_ROOM,         CAN_BE_ZORA),
             CONNECTION(RR_GREAT_BAY_TEMPLE_CENTRAL_ROOM,            CAN_BE_ZORA),
-            CONNECTION(RR_GREAT_BAY_TEMPLE_RED_PIPE_SWITCH_ROOM,    true),
+            CONNECTION(RR_GREAT_BAY_TEMPLE_RED_PIPE_SWITCH_ROOM,    CAN_USE_MAGIC_ARROW(ICE)),
         },
     };
     Regions[RR_GREAT_BAY_TEMPLE_PRE_BOSS_ROOM] = RandoRegion{ .sceneId = SCENE_SEA,
@@ -277,7 +277,7 @@ static RegisterShipInitFunc initFunc([]() {
     };
     Regions[RR_GREAT_BAY_TEMPLE_WART] = RandoRegion{ .sceneId = SCENE_SEA,
         .checks = {
-            CHECK(RC_GREAT_BAY_TEMPLE_ICE_ARROW_CHEST,  true),
+            CHECK(RC_GREAT_BAY_TEMPLE_ICE_ARROW_CHEST,  CanKillEnemy(ACTOR_BOSS_04),
             CHECK(RC_GREAT_BAY_TEMPLE_WART_POT_01,       true),
             CHECK(RC_GREAT_BAY_TEMPLE_WART_POT_02,       true),
             CHECK(RC_GREAT_BAY_TEMPLE_WART_POT_03,       true),
@@ -294,7 +294,7 @@ static RegisterShipInitFunc initFunc([]() {
     Regions[RR_GREAT_BAY_TEMPLE_WATER_WHEEL_ROOM] = RandoRegion{ .sceneId = SCENE_SEA,
         .checks = {
             CHECK(RC_GREAT_BAY_TEMPLE_SF_WATER_WHEEL_PLATFORM,           CAN_BE_ZORA || (HAS_ITEM(ITEM_BOW) && HAS_ITEM(ITEM_MASK_GREAT_FAIRY))),
-            CHECK(RC_GREAT_BAY_TEMPLE_SF_WATER_WHEEL_SKULLTULA,          true),
+            CHECK(RC_GREAT_BAY_TEMPLE_SF_WATER_WHEEL_SKULLTULA,          CanKillEnemy(ACTOR_EN_ST),
             CHECK(RC_GREAT_BAY_TEMPLE_WATER_WHEEL_FREESTANDING_RUPEE_01, true),
             CHECK(RC_GREAT_BAY_TEMPLE_WATER_WHEEL_FREESTANDING_RUPEE_02, true),
             CHECK(RC_GREAT_BAY_TEMPLE_WATER_WHEEL_FREESTANDING_RUPEE_03, true),
